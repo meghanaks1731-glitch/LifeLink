@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLink | Emergency Profile</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🚑 LifeLink</div>
+
+    <button onclick="location.href='index.html'">
+        Home
+    </button>
+</header>
+
+<section class="profile-section">
+
+    <div class="profile-box">
+
+        <h1>🚑 Create Emergency Profile</h1>
+
+        <p>
+            Add only information that may be important
+            during an emergency.
+        </p>
+
+        <form id="profileForm">
+
+            <label>Full Name</label>
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter full name"
+                required
+            >
+
+            <label>Blood Group</label>
+            <select id="blood" required>
+                <option value="">Select blood group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+            </select>
+
+            <label>Allergies</label>
+            <input
+                type="text"
+                id="allergy"
+                placeholder="Example: Penicillin"
+            >
+
+            <label>Medical Condition</label>
+            <input
+                type="text"
+                id="condition"
+                placeholder="Example: Asthma"
+            >
+
+            <label>Important Medication</label>
+            <input
+                type="text"
+                id="medicine"
+                placeholder="Example: Inhaler"
+            >
+
+            <h3>📞 Emergency Contact</h3>
+
+            <label>Contact Name</label>
+            <input
+                type="text"
+                id="contactName"
+                placeholder="Example: Ahmed"
+                required
+            >
+
+            <label>Relationship</label>
+            <input
+                type="text"
+                id="relationship"
+                placeholder="Example: Father"
+                required
+            >
+
+            <label>Phone Number</label>
+            <input
+                type="tel"
+                id="phone"
+                placeholder="Example: 9876543210"
+                required
+            >
+
+            <button type="submit" class="main-btn">
+                💾 Save Emergency Profile
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<script>
+
+document.getElementById("profileForm").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const profile = {
+
+        name: document.getElementById("name").value,
+
+        blood: document.getElementById("blood").value,
+
+        allergy: document.getElementById("allergy").value,
+
+        condition: document.getElementById("condition").value,
+
+        medicine: document.getElementById("medicine").value,
+
+        contactName: document.getElementById("contactName").value,
+
+        relationship: document.getElementById("relationship").value,
+
+        phone: document.getElementById("phone").value
+
+    };
+
+    localStorage.setItem(
+        "lifelinkProfile",
+        JSON.stringify(profile)
+    );
+
+    alert("✅ Emergency Profile Saved Successfully!");
+
+    window.location.href = "emergency.html";
+
+});
+
+</script>
+
+</body>
+</html>

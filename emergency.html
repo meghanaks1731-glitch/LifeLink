@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLink Emergency Access</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        .header {
+            background: #d90429;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 25px auto;
+            padding: 20px;
+        }
+
+        .warning {
+            background: #fff0f0;
+            border-left: 5px solid #d90429;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .info {
+            font-size: 17px;
+            margin: 10px 0;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            border: none;
+            text-decoration: none;
+            color: white;
+            padding: 15px;
+            margin-top: 12px;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .call {
+            background: #198754;
+        }
+
+        .location {
+            background: #0d6efd;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>🚨 LifeLink</h1>
+        <p>Emergency Health Profile</p>
+    </div>
+
+    <div class="container">
+
+        <div class="warning">
+            <strong>⚠️ Emergency Information</strong>
+            <p>Use this information only to provide immediate assistance.</p>
+        </div>
+
+        <div id="profileArea">
+
+            <div class="card">
+                <h2>👤 Patient Information</h2>
+
+                <p class="info">
+                    <strong>Name:</strong>
+                    <span id="name">Loading...</span>
+                </p>
+
+                <p class="info">
+                    <strong>Blood Group:</strong>
+                    <span id="blood">Loading...</span>
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>⚠️ Critical Medical Information</h2>
+
+                <p class="info">
+                    <strong>Allergies:</strong>
+                    <span id="allergy">Loading...</span>
+                </p>
+
+                <p class="info">
+                    <strong>Medical Condition:</strong>
+                    <span id="condition">Loading...</span>
+                </p>
+
+                <p class="info">
+                    <strong>Important Medication:</strong>
+                    <span id="medicine">Loading...</span>
+                </p>
+            </div>
+
+            <div class="card">
+                <h2>📞 Emergency Contact</h2>
+
+                <p class="info">
+                    <strong>Name:</strong>
+                    <span id="contactName">Loading...</span>
+                </p>
+
+                <p class="info">
+                    <strong>Relationship:</strong>
+                    <span id="relationship">Loading...</span>
+                </p>
+
+                <p class="info">
+                    <strong>Phone:</strong>
+                    <span id="phone">Loading...</span>
+                </p>
+
+                <a id="callButton" class="button call">
+                    📞 CALL EMERGENCY CONTACT
+                </a>
+            </div>
+
+            <div class="card">
+                <h2>📍 Location</h2>
+
+                <p class="info">
+                    Help the emergency contact know the patient's location.
+                </p>
+
+                <button class="button location" onclick="shareLocation()">
+                    📍 SHARE LOCATION
+                </button>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            🔒 LifeLink shows only essential emergency information.
+        </div>
+
+    </div>
+
+    <script>
+
+        // Get saved profile information
+        const profile = JSON.parse(localStorage.getItem("lifelinkProfile"));
+
+        if (profile) {
+
+            document.getElementById("name").textContent =
+                profile.name || "Not provided";
+
+            document.getElementById("blood").textContent =
+                profile.blood || "Not provided";
+
+            document.getElementById("allergy").textContent =
+                profile.allergy || "None provided";
+
+            document.getElementById("condition").textContent =
+                profile.condition || "None provided";
+
+            document.getElementById("medicine").textContent =
+                profile.medicine || "None provided";
+
+            document.getElementById("contactName").textContent =
+                profile.contactName || "Not provided";
+
+            document.getElementById("relationship").textContent =
+                profile.relationship || "Not provided";
+
+            document.getElementById("phone").textContent =
+                profile.phone || "Not provided";
+
+            // Create call button using saved phone number
+            if (profile.phone) {
+
+                document.getElementById("callButton").href =
+                    "tel:" + profile.phone;
+
+            } else {
+
+                document.getElementById("callButton").removeAttribute("href");
+            }
+
+        } else {
+
+            document.getElementById("profileArea").innerHTML = `
+                <div class="empty">
+                    <h2>⚠️ No Emergency Profile Found</h2>
+                    <p>Please create and save an emergency profile first.</p>
+                </div>
+            `;
+        }
+
+
+        // Share current location
+        function shareLocation() {
+
+            if (navigator.geolocation) {
+
+                navigator.geolocation.getCurrentPosition(
+
+                    function(position) {
+
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+
+                        const mapLink =
+                            "https://www.google.com/maps?q="
+                            + latitude + "," + longitude;
+
+                        if (navigator.share) {
+
+                            navigator.share({
+                                title: "LifeLink Emergency Location",
+                                text: "Emergency location:",
+                                url: mapLink
+                            });
+
+                        } else {
+
+                            window.open(mapLink, "_blank");
+                        }
+                    },
+
+                    function() {
+
+                        alert(
+                            "Unable to access location. Please allow location permission."
+                        );
+                    }
+                );
+
+            } else {
+
+                alert("Location is not supported by this browser.");
+            }
+        }
+
+    </script>
+
+</body>
+</html>
