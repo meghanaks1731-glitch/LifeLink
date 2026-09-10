@@ -48,7 +48,7 @@ if (!storedProfile) {
     if (typeof QRCode !== "undefined") {
 
         new QRCode(qrBox, {
-            text: window.location.href,
+            text: new URL("emergency-demo.html", window.location.href).href,
             width: 200,
             height: 200
         });
